@@ -3,17 +3,9 @@ option(ENABLE_ROSAPPS "Enable building the ReactOS extra applications" OFF)
 option(ENABLE_ROSTESTS "Enable building the ReactOS test suite" OFF)
 option(ENABLE_WALLPAPERS "Integrate wallpapers into the built ISOs" OFF)
 
-if(ENABLE_ROSAPPS)
-    add_subdirectory(rosapps)
-endif()
-
-if(ENABLE_ROSTESTS)
-    add_subdirectory(rostests)
-endif()
-
-if(ENABLE_WALLPAPERS)
-    add_subdirectory(wallpapers)
-endif()
+add_subdirectory(rosapps)
+add_subdirectory(rostests)
+add_subdirectory(wallpapers)
 
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/AHK_Tests/)
     add_subdirectory(AHK_Tests)
@@ -54,4 +46,12 @@ endif()
 # See also boot/bootdata/packages/reactos.dff.in
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/optional/DroidSansFallback.ttf)
     add_cd_file(FILE "${CMAKE_CURRENT_SOURCE_DIR}/optional/DroidSansFallback.ttf" DESTINATION reactos/Fonts FOR livecd)
+endif()
+
+## Slipstreaming drivers
+if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/drivers/)
+    file(GLOB_RECURSE EXTRA_FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/drivers/ ${CMAKE_CURRENT_SOURCE_DIR}/drivers/*)
+    foreach(item ${EXTRA_FILES})
+        add_cd_file(FILE ${CMAKE_CURRENT_SOURCE_DIR}/drivers/${item} DESTINATION reactos/system32/drivers NO_CAB NAME_ON_CD ${item} FOR bootcd regtest)
+    endforeach(item)
 endif()
