@@ -695,7 +695,7 @@ InitSystemPartition(
     if (InstallPartition->DiskEntry->MediaType == FixedMedia)
     {
         SystemPartition = FindSupportedSystemPartition(PartitionList,
-                                                       FALSE,
+                                                       TRUE,
                                                        InstallPartition->DiskEntry,
                                                        InstallPartition);
         /* Use the original system partition as the old active partition hint */
@@ -716,10 +716,7 @@ InitSystemPartition(
     }
     else // if (InstallPartition->DiskEntry->MediaType == RemovableMedia)
     {
-        SystemPartition = FindSupportedSystemPartition(PartitionList,
-                                                       TRUE,
-                                                       InstallPartition->DiskEntry,
-                                                       InstallPartition);
+        SystemPartition = InstallPartition;
         /* Don't specify any old active partition hint */
         OldActivePart = NULL;
     }
