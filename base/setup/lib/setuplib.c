@@ -716,7 +716,10 @@ InitSystemPartition(
     }
     else // if (InstallPartition->DiskEntry->MediaType == RemovableMedia)
     {
-        SystemPartition = InstallPartition;
+        SystemPartition = FindSupportedSystemPartition(PartitionList,
+                                                       TRUE,
+                                                       InstallPartition->DiskEntry,
+                                                       InstallPartition);
         /* Don't specify any old active partition hint */
         OldActivePart = NULL;
     }
